@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        #countdown {
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+        }
+        
+        #timer {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        #timer div {
+            margin: 0 10px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            min-width: 80px;
+        }
+        
+        #timer span {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        #timer span.label {
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .expired {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown">
+        <h2>Countdown Timer</h2>
+        <div id="timer">
+            <div>
+                <span id="days" class="value">0</span>
+                <span class="label">Days</span>
+            </div>
+            <div>
+                <span id="hours" class="value">0</span>
+                <span class="label">Hours</span>
+            </div>
+            <div>
+                <span id="minutes" class="value">0</span>
+                <span class="label">Minutes</span>
+            </div>
+            <div>
+                <span id="seconds" class="value">0</span>
+                <span class="label">Seconds</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set the target date and time for the countdown
+        const targetDate = new Date("June 10, 2023 15:00:00").getTime();
+
+        // Update the countdown every second
+        const countdownInterval = setInterval(() => {
+            // Get the current date and time
+            const now = new Date().getTime();
+
+            // Calculate the time difference between the current date/time and the target date/time
+            const timeDifference = targetDate - now;
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            // Display the calculated time in the HTML elements
+            document.getElementById("days").textContent = days;
+            document.getElementById("hours").textContent = hours;
+            document.getElementById("minutes").textContent = minutes;
+            document.getElementById("seconds").textContent = seconds;
+
+            // Add leading zeros to single-digit values
+            document.querySelectorAll('.value').forEach(element => {
+                element.textContent = String(element.textContent).padStart(2, '0');
+            });
+
+            // Check if the countdown has expired
+            if (timeDifference < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("timer").innerHTML = "<span class='expired'>Countdown expired</span>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
